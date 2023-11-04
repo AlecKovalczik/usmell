@@ -48,6 +48,7 @@ public class Review {
     
 
     /* these are the getters */
+    public int getReviewID(){return reviewID;}
     public int getRating(){return rating;}
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}

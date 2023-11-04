@@ -16,6 +16,10 @@ public class User {
         nextID++;
     }
 
+    public int getUserID(){
+        return userID;
+    }
+
     public String getUsername(){
         return username;
     }
@@ -32,11 +36,26 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getToken() {
         return token;
     }
     
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof User) {
+            User u = (User) o;
+            if (u.getUserID() == userID) {
+                return true;
+            }
+        }
+        return false;
     }
 }
