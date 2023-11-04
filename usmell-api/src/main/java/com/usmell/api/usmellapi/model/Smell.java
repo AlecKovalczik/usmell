@@ -13,11 +13,33 @@ public class Smell {
     public Smell(String name, SmellType smellType, int userID, String comment, int originalRating) throws Exception{
         this.name = name;
         this.smellType = smellType;
+        
+        // create the first review to calculate rating data
         this.createReview(userID, comment, originalRating);
-
+        
         // Set the id to a unique int using a static variable
         this.smellID = nextSmellID;
         smellID++;
+    }
+
+    public int getSmellID(){
+        return smellID;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public SmellType getSmellType(){
+        return smellType;
+    }
+    
+    public void setSmellType(SmellType smellType){
+        this.smellType = smellType;
     }
 
     public int getReportedCount(){
