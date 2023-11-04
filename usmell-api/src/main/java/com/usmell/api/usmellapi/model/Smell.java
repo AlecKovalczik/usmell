@@ -10,10 +10,10 @@ public class Smell {
     private HashMap<Integer, Review> reviews = null; // <userID, Review>
     private SmellType smellType;
     
-    public Smell(String name, SmellType smellType, int userID, int originalRating, String comment){
+    public Smell(String name, SmellType smellType, int userID, String comment, int originalRating) throws Exception{
         this.name = name;
         this.smellType = smellType;
-        createReview(userID, rating);
+        this.createReview(userID, comment, originalRating);
 
         // Set the id to a unique int using a static variable
         this.smellID = nextSmellID;
@@ -28,7 +28,7 @@ public class Smell {
         return this.rating;
     }
 
-    public void createReview(int userID, int originalRating, String comment){
+    public void createReview(int userID, String comment, int originalRating) throws Exception{
         Review review = new Review(userID, comment, originalRating);
         if (reviews.containsKey(userID)){
             throw new Exception("User already reviewed this smell");
