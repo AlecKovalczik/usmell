@@ -4,9 +4,9 @@ import java.sql.Time;
 import java.time.LocalTime;
 import java.util.HashSet; 
 public class Review {
-    private String userID; 
-    private HashSet<String> upVotes;
-    private HashSet<String> downVotes;
+    private int userID; 
+    private HashSet<Integer> upVotes;
+    private HashSet<Integer> downVotes;
     private Time timeReviewed;
     private String comment; 
     private int reviewID; 
@@ -14,7 +14,7 @@ public class Review {
     private int votes;  
     private static int nextReviewId = 0; 
 
-    public Review(String userID, String comment, int rating){
+    public Review(int userID, String comment, int rating){
         upVotes = new HashSet<>(); 
         downVotes = new HashSet<>(); 
         votes = 0; 
@@ -28,7 +28,7 @@ public class Review {
         nextReviewId++;
     }
 
-    public boolean upVote(String userID){
+    public boolean upVote(int userID){
         if(!upVotes.contains(userID)){
             upVotes.add(userID);
             votes = upVotes.size() - downVotes.size(); 
@@ -38,7 +38,7 @@ public class Review {
         }
     }
 
-    public boolean downVote(String userID){
+    public boolean downVote(int userID){
         if(!downVotes.contains(userID)){
             downVotes.add(userID); 
             votes = upVotes.size() - downVotes.size(); 
@@ -57,7 +57,7 @@ public class Review {
     public int getRating(){return rating;}
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}
-    public String getReviewee(){return userID;}
+    public int getReviewee(){return userID;}
     
     
 
