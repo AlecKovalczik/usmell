@@ -1,13 +1,10 @@
 package com.usmell.api.usmellapi.model;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.HashSet; 
 public class Review {
     private int userID; 
     private HashSet<Integer> upVotes;
     private HashSet<Integer> downVotes;
-    private Time timeReviewed;
     private String comment; 
     private int reviewID; 
     private int rating;
@@ -19,12 +16,9 @@ public class Review {
         downVotes = new HashSet<>(); 
         votes = 0; 
         this.rating = rating;
-        LocalTime localTime = LocalTime.now();
-
-        Time timeReviewed = new Time(localTime.toNanoOfDay()); 
         this.comment = comment;
         this.userID= userID;
-        reviewID = nextReviewId; 
+        this.reviewID = nextReviewId; 
         nextReviewId++;
     }
 
