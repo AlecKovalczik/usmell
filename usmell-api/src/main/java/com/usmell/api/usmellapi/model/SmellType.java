@@ -11,4 +11,8 @@ public enum SmellType {
     private SmellType(String name){
         this.name = name;
     }
+
+    public String getName(){
+        return name;
+    }
 }
