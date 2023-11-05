@@ -1,14 +1,16 @@
 package com.usmell.api.usmellapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
     private static int nextID;
-    private int userID;
-    private String username;
-    private String email;
-    private String password;
-    private String token;
+    @JsonProperty("userID") private int userID;
+    @JsonProperty("username") private String username;
+    @JsonProperty("email") private String email;
+    @JsonProperty("password") private String password;
+    @JsonProperty("token") private String token;
 
-    public User(String username, String email, String password){
+    public User(@JsonProperty("username") String username, @JsonProperty("email") String email, @JsonProperty("password") String password){
         this.username = username;
         this.email = email;
         this.password = password;
@@ -24,7 +26,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(@JsonProperty("username") String username){
         this.username = username;
     }
 
@@ -32,7 +34,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(@JsonProperty("email") String email){
         this.email = email;
     }
 
@@ -44,7 +46,7 @@ public class User {
         return token;
     }
     
-    public void setToken(String token) {
+    public void setToken(@JsonProperty("token") String token) {
         this.token = token;
     }
 

@@ -2,20 +2,19 @@ package com.usmell.api.usmellapi.model;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Smell {
     private static int nextSmellID;
-    private int smellID;
-    private String name;
-    private double rating = 0.0;
-    private HashMap<Integer, Review> reviews = null; // <userID, Review>
-    private SmellType smellType;
+    @JsonProperty("smellID") private int smellID;
+    @JsonProperty("name") private String name;
+    @JsonProperty("rating") private double rating = 0.0;
+    @JsonProperty("reviews") private HashMap<Integer, Review> reviews = null; // <userID, Review>
+    @JsonProperty("smellType") private SmellType smellType;
     
-    public Smell(String name, SmellType smellType, int userID, String comment, int originalRating) throws Exception{
+    public Smell(@JsonProperty("name") String name, @JsonProperty("smellType") SmellType smellType) throws Exception{
         this.name = name;
         this.smellType = smellType;
-        
-        // create the first review to calculate rating data
-        this.createReview(userID, comment, originalRating);
         
         // Set the id to a unique int using a static variable
         this.smellID = nextSmellID;
@@ -30,7 +29,7 @@ public class Smell {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(@JsonProperty("name") String name){
         this.name = name;
     }
 
@@ -38,7 +37,7 @@ public class Smell {
         return smellType;
     }
     
-    public void setSmellType(SmellType smellType){
+    public void setSmellType(@JsonProperty("smellType") SmellType smellType){
         this.smellType = smellType;
     }
 
