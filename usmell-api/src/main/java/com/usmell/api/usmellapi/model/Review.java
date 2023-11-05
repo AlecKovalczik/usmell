@@ -1,28 +1,32 @@
 package com.usmell.api.usmellapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashSet; 
 public class Review {
-    private int userID; 
-    private HashSet<Integer> upVotes;
-    private HashSet<Integer> downVotes;
-    private String comment; 
-    private int reviewID; 
-    private int rating;
-    private int votes;  
-    private static int nextReviewId = 0; 
+    @JsonProperty("userID") private int userID; 
+    @JsonProperty("smellID") private int smellID;
+    @JsonProperty("upVotes") private HashSet<Integer> upVotes;
+    @JsonProperty("downVotes") private HashSet<Integer> downVotes;
+    @JsonProperty("comment") private String comment; 
+    @JsonProperty("reviewID") private int reviewID; 
+    @JsonProperty("rating") private int rating;
+    @JsonProperty("votes") private int votes;  
+    @JsonProperty("nextReviewID") private static int nextReviewId = 0; 
 
-    public Review(int userID, String comment, int rating){
+    public Review(@JsonProperty("userID") int userID, @JsonProperty("smellID") int smellID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
         upVotes = new HashSet<>(); 
         downVotes = new HashSet<>(); 
         votes = 0; 
         this.rating = rating;
         this.comment = comment;
-        this.userID= userID;
+        this.userID = userID;
+        this.smellID = smellID;
         this.reviewID = nextReviewId; 
         nextReviewId++;
     }
 
-    public boolean upVote(int userID){
+    public boolean upVote(@JsonProperty("userID") int userID){
         if(!upVotes.contains(userID)){
             upVotes.add(userID);
             votes = upVotes.size() - downVotes.size(); 
@@ -32,7 +36,7 @@ public class Review {
         }
     }
 
-    public boolean downVote(int userID){
+    public boolean downVote(@JsonProperty("userID") int userID){
         if(!downVotes.contains(userID)){
             downVotes.add(userID); 
             votes = upVotes.size() - downVotes.size(); 
@@ -43,8 +47,8 @@ public class Review {
     }
 
     /* methods to edit review */
-    public void editComment(String newComment){comment = newComment;}
-    public void editRating(int newRating){this.rating = newRating; }
+    public void editComment(@JsonProperty("comment") String newComment){comment = newComment;}
+    public void editRating(@JsonProperty("rating") int newRating){this.rating = newRating; }
     
 
     /* these are the getters */
@@ -52,7 +56,8 @@ public class Review {
     public int getRating(){return rating;}
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}
-    public int getReviewee(){return userID;}
+    public int getReviewer(){return userID;}
+    public int getSmellID(){return smellID;}
     
     
 
