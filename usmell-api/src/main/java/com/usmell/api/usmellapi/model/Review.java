@@ -54,7 +54,7 @@ public class Review {
     public int getRating(){return rating;}
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}
-    public int getReviewee(){return userID;}
+    public int getReviewer(){return userID;}
     
     
 

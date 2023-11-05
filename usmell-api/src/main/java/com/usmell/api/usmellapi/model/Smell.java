@@ -1,6 +1,6 @@
 package com.usmell.api.usmellapi.model;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +9,7 @@ public class Smell {
     @JsonProperty("smellID") private int smellID;
     @JsonProperty("name") private String name;
     @JsonProperty("rating") private double rating = 0.0;
-    @JsonProperty("reviews") private HashMap<Integer, Review> reviews = null; // <userID, Review>
+    @JsonProperty("reviews") private TreeMap<Integer, Review> reviews = null; // <userID, Review>
     @JsonProperty("smellType") private SmellType smellType;
     
     public Smell(@JsonProperty("name") String name, @JsonProperty("smellType") SmellType smellType) throws Exception{
