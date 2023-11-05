@@ -22,13 +22,13 @@ import java.util.TreeMap;
 
 @RestController
 @CrossOrigin
-@RequestMapping("data/reviews")
-public class ReviewController {
+@RequestMapping("data/smells")
+public class SmellController {
     private ReviewDAO reviewDao;
     private UserDAO userDao;
     private SmellDAO smellDao;
 
-    public ReviewController(ReviewDAO reviewDao, UserDAO userDao, SmellDAO smellDao) {
+    public SmellController(ReviewDAO reviewDao, UserDAO userDao, SmellDAO smellDao) {
         this.reviewDao = reviewDao;
         this.userDao = userDao;
     }
@@ -42,7 +42,7 @@ public class ReviewController {
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TreeMap<Integer, Review>> getReviews(@PathVariable int smellID){
+    public ResponseEntity<TreeMap<Integer, Review>> getSmells(@PathVariable int smellID){
         try {
             TreeMap<Integer, Review> smellReviews = smellDao.getReviews(smellID);
             return new ResponseEntity<TreeMap<Integer, Review>>(smellReviews, HttpStatus.OK);
