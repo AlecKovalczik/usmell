@@ -63,16 +63,16 @@ public class Smell {
         return reviews;
     }
 
-    public void createReview(int userID, String comment, int originalRating) throws Exception{
-        Review review = new Review(userID, smellID, comment, originalRating);
+    public void createReview(int reviewID, int userID, String comment, int originalRating) throws Exception{
+        Review review = new Review(reviewID, userID, smellID, comment, originalRating);
         if (reviews.containsKey(userID)){
             throw new Exception("User already reviewed this smell");
         }
         this.reviews.put(userID, review);
     }
 
-    public void editReview(int userID, int originalRating, String comment){
-        Review review = new Review(userID, smellID, comment, originalRating);
+    public void editReview(int reviewID, int userID, int originalRating, String comment){
+        Review review = new Review(reviewID, userID, smellID, comment, originalRating);
         if (reviews.containsKey(userID)){
             this.reviews.replace(userID, review);
         }

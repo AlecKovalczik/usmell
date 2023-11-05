@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,7 @@ public class ReviewController {
         }
     }
 
-    @PostMapping("createReview")
+    @PostMapping("")
     public ResponseEntity<Review> createReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Review review) {
         try {
             // authentication
@@ -73,7 +74,7 @@ public class ReviewController {
         }
     }
 
-    @PostMapping("updateReview")
+    @PutMapping("")
     public ResponseEntity<Review> updateReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Review review){
         try {
             // authentication
@@ -97,7 +98,7 @@ public class ReviewController {
 
             if (hasReviewed) {
                 System.out.println("update");
-                Review r = new Review(revID, review.getSmellID(), review.getComment(), review.getRating());
+                Review r = new Review(revID, review.getReviewer(), review.getSmellID(), review.getComment(), review.getRating());
                 Review updatedReview = reviewDao.updateReview(r);
                 if (updatedReview == null){
                     return new ResponseEntity<>(HttpStatus.CONFLICT);

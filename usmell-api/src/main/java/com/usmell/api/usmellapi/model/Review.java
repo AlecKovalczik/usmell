@@ -1,29 +1,41 @@
 package com.usmell.api.usmellapi.model;
 
+import java.util.HashSet;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet; 
 public class Review {
+    @JsonProperty("reviewID") private int reviewID; 
     @JsonProperty("userID") private int userID; 
     @JsonProperty("smellID") private int smellID;
     @JsonProperty("upVotes") private HashSet<Integer> upVotes;
     @JsonProperty("downVotes") private HashSet<Integer> downVotes;
     @JsonProperty("comment") private String comment; 
-    @JsonProperty("reviewID") private int reviewID; 
     @JsonProperty("rating") private int rating;
     @JsonProperty("votes") private int votes;  
-    @JsonProperty("nextReviewID") private static int nextReviewId = 0; 
+    // private static int nextReviewId = 0; 
 
-    public Review(@JsonProperty("userID") int userID, @JsonProperty("smellID") int smellID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
-        upVotes = new HashSet<>(); 
-        downVotes = new HashSet<>(); 
-        votes = 0; 
+    // public Review(@JsonProperty("userID") int userID, @JsonProperty("smellID") int smellID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
+    //     upVotes = new HashSet<>(); 
+    //     downVotes = new HashSet<>(); 
+    //     votes = 0; 
+    //     this.rating = rating;
+    //     this.comment = comment;
+    //     this.userID = userID;
+    //     this.smellID = smellID;
+    //     this.reviewID = nextReviewId; 
+    //     nextReviewId++;
+    // }
+
+    public Review(@JsonProperty("reviewID") int reviewID, @JsonProperty("userID") int userID, @JsonProperty("smellID") int smellID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
+        this.upVotes = new HashSet<>(); 
+        this.downVotes = new HashSet<>(); 
+        this.votes = 0; 
         this.rating = rating;
         this.comment = comment;
         this.userID = userID;
         this.smellID = smellID;
-        this.reviewID = nextReviewId; 
-        nextReviewId++;
+        this.reviewID = reviewID;
     }
 
     public boolean upVote(@JsonProperty("userID") int userID){
@@ -57,8 +69,6 @@ public class Review {
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}
     public int getReviewer(){return userID;}
-    public int getSmellID(){return smellID;}
-    
-    
+    public int getSmellID(){return smellID;}  
 
 }

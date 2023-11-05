@@ -23,11 +23,23 @@ public class ReviewFileDAO implements ReviewDAO {
                                         // objects and JSON text format written
                                         // to the file
     private String filename;    // Filename to read from and write to
+    private static int nextID;
 
     public ReviewFileDAO(@Value("${reviews.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
         load();  // load the reviews from the file
+    }
+
+    /**
+     * Generates the next id for a new {@linkplain Product product}
+     * 
+     * @return The next id
+     */
+    private synchronized static int nextID() {
+        int id = nextID;
+        ++nextID;
+        return id;
     }
 
     private Review[] getReviewsArray() {
@@ -62,7 +74,10 @@ public class ReviewFileDAO implements ReviewDAO {
 
         // Add each review to the hash map
         for (Review review : reviewArray) {
+
             reviews.put(review.getReviewID(), review);
+            if (review.getReviewID() > nextID)
+                nextID = review.getReviewer();
         }
         return true;
     }
@@ -103,7 +118,7 @@ public class ReviewFileDAO implements ReviewDAO {
                     return null;
                 }
             }
-            Review newReview = new Review(review.getReviewer(), review.getSmellID(), review.getComment(), review.getRating());
+            Review newReview = new Review(nextID(), review.getReviewer(), review.getSmellID(), review.getComment(), review.getRating());
             reviews.put(newReview.getReviewID(), newReview);
             save(); // may throw an IOException
             return newReview;
