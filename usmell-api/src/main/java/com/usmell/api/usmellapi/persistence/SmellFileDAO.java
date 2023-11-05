@@ -8,11 +8,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usmell.api.usmellapi.model.Smell;
 import com.usmell.api.usmellapi.model.Review;
 
+@Component
 public class SmellFileDAO implements SmellDAO {
     Map<Integer,Smell> smells;   // Provides a local cache of the smell objects
                                 // so that we don't need to read from the file
@@ -79,7 +81,7 @@ public class SmellFileDAO implements SmellDAO {
     }
 
     @Override
-    public Map<Integer, Review> getReviews(int smellID) throws IOException {
+    public TreeMap<Integer, Review> getReviews(int smellID) throws IOException {
         Smell smell = getSmell(smellID);
         TreeMap<Integer, Review> reviews = smell.getReviews();
         return reviews;

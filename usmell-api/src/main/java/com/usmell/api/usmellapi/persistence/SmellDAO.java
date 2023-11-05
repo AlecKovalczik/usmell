@@ -1,7 +1,7 @@
 package com.usmell.api.usmellapi.persistence;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.TreeMap;
 
 import com.usmell.api.usmellapi.model.Review;
 import com.usmell.api.usmellapi.model.Smell;
@@ -17,7 +17,7 @@ public interface SmellDAO {
 
     Smell[] getSmells() throws IOException;
 
-    Map<Integer, Review> getReviews(int smellID) throws IOException;
+    TreeMap<Integer, Review> getReviews(int smellID) throws IOException;
 
     Smell createSmell(Smell smell) throws IOException;
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet; 
 public class Review {
     @JsonProperty("userID") private int userID; 
+    @JsonProperty("smellID") private int smellID;
     @JsonProperty("upVotes") private HashSet<Integer> upVotes;
     @JsonProperty("downVotes") private HashSet<Integer> downVotes;
     @JsonProperty("comment") private String comment; 
@@ -13,13 +14,14 @@ public class Review {
     @JsonProperty("votes") private int votes;  
     @JsonProperty("nextReviewID") private static int nextReviewId = 0; 
 
-    public Review(@JsonProperty("userID") int userID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
+    public Review(@JsonProperty("userID") int userID, @JsonProperty("smellID") int smellID, @JsonProperty("comment") String comment, @JsonProperty("rating") int rating){
         upVotes = new HashSet<>(); 
         downVotes = new HashSet<>(); 
         votes = 0; 
         this.rating = rating;
         this.comment = comment;
-        this.userID= userID;
+        this.userID = userID;
+        this.smellID = smellID;
         this.reviewID = nextReviewId; 
         nextReviewId++;
     }
@@ -55,6 +57,7 @@ public class Review {
     public int getVotes(){return votes;} 
     public String getComment(){return comment;}
     public int getReviewer(){return userID;}
+    public int getSmellID(){return smellID;}
     
     
 

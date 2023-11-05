@@ -78,6 +78,23 @@ public class ReviewFileDAO implements ReviewDAO {
     // }
 
     @Override
+    public Review getReview(int reviewID) throws IOException {
+        return reviews.get(reviewID);
+    }
+
+    @Override
+    public Review getReview(int userID, int smellID) throws IOException {
+        Review[] reviewArray = getReviewsArray();
+
+        for (Review review : reviewArray) {
+            if (review.getReviewer() == userID && review.getSmellID() == smellID){
+                return review;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Review createReview(Review review) throws IOException {
         synchronized(reviews) {
             for (Review element : reviews.values()){
@@ -86,7 +103,7 @@ public class ReviewFileDAO implements ReviewDAO {
                     return null;
                 }
             }
-            Review newReview = new Review(review.getReviewer(), review.getComment(), review.getRating());
+            Review newReview = new Review(review.getReviewer(), review.getSmellID(), review.getComment(), review.getRating());
             reviews.put(newReview.getReviewID(), newReview);
             save(); // may throw an IOException
             return newReview;
