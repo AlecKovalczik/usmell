@@ -49,6 +49,10 @@ public class Smell {
         return this.rating;
     }
 
+    public TreeMap<Integer, Review> getReviews(){
+        return reviews;
+    }
+
     public void createReview(int userID, String comment, int originalRating) throws Exception{
         Review review = new Review(userID, comment, originalRating);
         if (reviews.containsKey(userID)){
