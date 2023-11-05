@@ -123,10 +123,10 @@ public class SmellFileDAO implements SmellDAO {
     }
 
     @Override
-    public Smell removeSmell(Smell smell) throws IOException {
+    public Smell removeSmell(int smellID) throws IOException {
         synchronized(smells) {
-            if (smells.containsKey(smell.getSmellID())){
-                Smell removed = smells.remove(smell.getSmellID());
+            if (smells.containsKey(smellID)){
+                Smell removed = smells.remove(smellID);
                 save();
                 return removed;
             } else {

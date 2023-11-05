@@ -23,5 +23,5 @@ public interface SmellDAO {
 
     Smell updateSmell(Smell smell) throws IOException;
 
-    Smell removeSmell(Smell smell) throws IOException;
+    Smell removeSmell(int smellID) throws IOException;
 }

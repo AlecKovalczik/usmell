@@ -33,14 +33,6 @@ public class ReviewController {
         this.userDao = userDao;
     }
 
-    /**
-     * Searches for an existing {@linkplain Review review} with the provided review productID
-     * 
-     * @param id The productID used to locate {@link Review review}
-     * 
-     * @return ResponseEntity with found {@link Review review} list and HTTP status of OK<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
     @GetMapping("/{id}")
     public ResponseEntity<TreeMap<Integer, Review>> getReviews(@PathVariable int smellID){
         try {
@@ -51,16 +43,6 @@ public class ReviewController {
         }
     }
 
-    /**
-     * Creates a {@linkplain Review review} with the provided review object
-     * 
-     * @param review - The {@link Review review} to create
-     * 
-     * @return ResponseEntity with created {@link Review review} object and HTTP status of CREATED<br>
-     * ResponseEntity with HTTP status of CONFLICT if {@link Review review} object already exists<br>
-     * ResponseEntity with HTTP status of PAYMENT_REQUIRED if the user has never bought the corresponding product<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
     @PostMapping("createReview")
     public ResponseEntity<Review> createReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Review review) {
         try {
@@ -131,3 +113,4 @@ public class ReviewController {
         }
     }
 }
+

@@ -20,6 +20,16 @@ public class Smell {
         this.smellID = nextSmellID;
         smellID++;
     }
+    
+    public Smell(@JsonProperty("smellID") int smellID, @JsonProperty("name") String name, @JsonProperty("smellType") SmellType smellType) throws Exception{
+        this.smellID = smellID;
+        this.name = name;
+        this.smellType = smellType;
+        
+        // Set the id to a unique int using a static variable
+        this.smellID = nextSmellID;
+        smellID++;
+    }
 
     public int getSmellID(){
         return smellID;

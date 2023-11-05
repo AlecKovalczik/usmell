@@ -3,6 +3,7 @@ package com.usmell.api.usmellapi.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,58 +12,47 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.usmell.api.usmellapi.model.Review;
+import com.usmell.api.usmellapi.model.Smell;
 import com.usmell.api.usmellapi.model.User;
-import com.usmell.api.usmellapi.persistence.ReviewDAO;
 import com.usmell.api.usmellapi.persistence.SmellDAO;
 import com.usmell.api.usmellapi.persistence.UserDAO;
 
 import java.io.IOException;
-import java.util.TreeMap;
 
 @RestController
 @CrossOrigin
 @RequestMapping("data/smells")
 public class SmellController {
-    private ReviewDAO reviewDao;
     private UserDAO userDao;
     private SmellDAO smellDao;
 
-    public SmellController(ReviewDAO reviewDao, UserDAO userDao, SmellDAO smellDao) {
-        this.reviewDao = reviewDao;
+    public SmellController(UserDAO userDao, SmellDAO smellDao) {
         this.userDao = userDao;
+        this.smellDao = smellDao;
     }
 
-    /**
-     * Searches for an existing {@linkplain Review review} with the provided review productID
-     * 
-     * @param id The productID used to locate {@link Review review}
-     * 
-     * @return ResponseEntity with found {@link Review review} list and HTTP status of OK<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<TreeMap<Integer, Review>> getSmells(@PathVariable int smellID){
+    @GetMapping("/{smellID}")
+    public ResponseEntity<Smell> getSmell(@PathVariable int smellID){
         try {
-            TreeMap<Integer, Review> smellReviews = smellDao.getReviews(smellID);
-            return new ResponseEntity<TreeMap<Integer, Review>>(smellReviews, HttpStatus.OK);
+            Smell smell = smellDao.getSmell(smellID);
+            return new ResponseEntity<Smell>(smell, HttpStatus.OK);
         } catch (IOException e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    /**
-     * Creates a {@linkplain Review review} with the provided review object
-     * 
-     * @param review - The {@link Review review} to create
-     * 
-     * @return ResponseEntity with created {@link Review review} object and HTTP status of CREATED<br>
-     * ResponseEntity with HTTP status of CONFLICT if {@link Review review} object already exists<br>
-     * ResponseEntity with HTTP status of PAYMENT_REQUIRED if the user has never bought the corresponding product<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
-    @PostMapping("createReview")
-    public ResponseEntity<Review> createReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Review review) {
+    @GetMapping("")
+    public ResponseEntity<Smell[]> getSmells(){
+        try {
+            Smell[] smells = smellDao.getSmells();
+            return new ResponseEntity<Smell[]>(smells, HttpStatus.OK);
+        } catch (IOException e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("createSmell")
+    public ResponseEntity<Smell> createSmell(@RequestHeader("Authorization") String bearerToken, @RequestBody Smell smell) {
         try {
             // authentication
             User user = userDao.getUserFromSession(bearerToken); // authenticate user
@@ -70,17 +60,30 @@ public class SmellController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            int revUserID = review.getReviewer();
-            int revSmellID = review.getSmellID();
+            Smell newSmell = smellDao.createSmell(smell);
+            return new ResponseEntity<>(newSmell, HttpStatus.OK);
+                        
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-            if (reviewDao.getReview(revUserID, revSmellID) == null) {
-                System.out.println("create");
-                Review newReview = reviewDao.createReview(review);
-                if (newReview == null){
+    @PostMapping("updateSmell")
+    public ResponseEntity<Smell> updateReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Smell smell){
+        try {
+            // authentication
+            User user = userDao.getUserFromSession(bearerToken); // authenticate user
+            if (user == null) { // if authorization fails, tell them they are not authorized
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            if (smellDao.getSmell(smell.getSmellID()) != null) {
+                Smell newSmell = new Smell(smell.getSmellID(), smell.getName(), smell.getSmellType());
+                Smell updatedSmell = smellDao.updateSmell(newSmell);
+                if (updatedSmell == null){
                     return new ResponseEntity<>(HttpStatus.CONFLICT);
                 }
-                
-                return new ResponseEntity<Review>(newReview, HttpStatus.CREATED);
+                return new ResponseEntity<Smell>(updatedSmell, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
@@ -88,45 +91,25 @@ public class SmellController {
                         
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    @PostMapping("updateReview")
-    public ResponseEntity<Review> updateReview(@RequestHeader("Authorization") String bearerToken, @RequestBody Review review){
+    @DeleteMapping("/{smellID}")
+    public ResponseEntity<Smell> deleteSmell(@RequestHeader("Authorization") String bearerToken, @PathVariable int smellID) {
+    
         try {
             // authentication
             User user = userDao.getUserFromSession(bearerToken); // authenticate user
             if (user == null) { // if authorization fails, tell them they are not authorized
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-
-            boolean hasReviewed = false; 
-            int revUserID = review.getReviewer();
-            int revSmellID = review.getSmellID();
-            int revID = -1;
-
-
-            // checks to see if the user has already created a review for that product, if so then just update that
-            if (reviewDao.getReview(revUserID, revSmellID) != null) {
-                Review rev = reviewDao.getReview(revUserID, revSmellID);
-                hasReviewed = true;
-                revID = rev.getReviewID();
-            }
-
-            if (hasReviewed) {
-                System.out.println("update");
-                Review r = new Review(revID, review.getSmellID(), review.getComment(), review.getRating());
-                Review updatedReview = reviewDao.updateReview(r);
-                if (updatedReview == null){
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);
-                }
-                return new ResponseEntity<Review>(updatedReview, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
-            }
-
-                        
-        } catch (IOException e) {
+            if(smellDao.removeSmell(smellID) != null)
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(IOException e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
