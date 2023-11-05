@@ -33,7 +33,7 @@ public class ReviewController {
         this.userDao = userDao;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{smellID}")
     public ResponseEntity<TreeMap<Integer, Review>> getReviews(@PathVariable int smellID){
         try {
             TreeMap<Integer, Review> smellReviews = smellDao.getReviews(smellID);

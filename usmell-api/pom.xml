@@ -64,7 +64,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.usmell.api.usmellapi.usmellApiApplication</mainClass>
+					<mainClass>com.usmell.api.usmellapi.USmellApiApplication</mainClass>
 					<arguments></arguments>
 				</configuration>
 			</plugin>

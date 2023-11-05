@@ -2,6 +2,7 @@ package com.usmell.api.usmellapi.persistence;
 
 import java.io.IOException;
 
+
 import com.usmell.api.usmellapi.model.User;
 
 public interface UserDAO {
